@@ -4,7 +4,7 @@
             <img src="https://www.pngitem.com/pimgs/m/172-1722643_yugioh-logo-png-yu-gi-oh-logo-transparent.png" alt="">
         </div>
         <div>
-            <h1>Yu-Gi-Oh Api</h1>
+            <h1>{{title}}</h1>
         </div>
     </div>
 </template>
@@ -12,6 +12,9 @@
 <script>
 export default {
     name: 'HeaderComponent',
+    props:{
+        title: String,
+    },
     data () {
         return {
 

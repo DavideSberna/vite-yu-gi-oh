@@ -2,10 +2,10 @@
 
 <template>
   <header>
-    <HeaderComponent/>
+    <HeaderComponent title="Yu-Gi-Oh Api"/>
   </header>
   <main>
-    <MainComponent/>
+    <MainComponent @on-archetype-main-change="getCharacters()" @restart-type="resetSearchType()"/>
   </main>
 </template>
 
@@ -24,24 +24,49 @@ import MainComponent from './components/MainComponent.vue'
     data(){
       return{
         store,
-        axios,
+        
       }
     },
     methods: {
     getCharacters() {
-      const url = store.baseUrl + store.endpoint;
-      axios.get(url).then((res) => {
-        store.characterList = res.data.data;
-        console.log(res.data.data)
         
+      let url = store.baseUrl + store.endpoint;
+
+      
+        let options = {};
+        let params = {}
+        for(let key in store.search){
+          if(store.search[key]){
+            params[key]= store.search[key]
+          }
+        }
+        console.log(params)
+         
+        if(Object.keys(params).length > 0){
+          options.params = params
+        }  
+         
+
+      axios.get(url, options).then((res) => {
+        store.characterList = res.data.data;  
+      });
+       
+      axios.get(store.baseUrlArchetype).then((res) => {
+        store.characterArchetypeList = res.data;
          
       });
       
+    },
+    resetSearchType(){
+      store.search.archetype = '';
+      store.search.fname = '';
     }
+    
   },
   mounted() {
     store.endpoint = 'cardinfo.php?num=50&offset=0'
     this.getCharacters();
+     
      
   }
     

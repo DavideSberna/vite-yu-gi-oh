@@ -1,20 +1,40 @@
 <template>
+    <!-- store.search.archetype -->
     <div class="container p-4">
-        <select class="form-select" aria-label="Default select example">
-            <option selected>Type card</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Nome carta" v-model="store.search.fname">
+        </div>
+        <select class="form-select" v-model="store.search.archetype">
+            <option :value="type.archetype_name" v-for="(type, index) in store.characterArchetypeList">{{ type.archetype_name }}</option>
         </select>
+        <div>
+            <button class="btn btn-outline-secondary" type="button" @click.prevent="filterArchetype()">Cerca</button>
+        </div>
+        <div>
+            <button class="btn btn-outline-secondary" type="button" @click.prevent="resetType()">Reset</button>
+        </div>
     </div>
 </template>
 
 <script>
+import { store } from '../data/store';
 export default {
     name: 'SelectComponent',
+    emits: ['onArchetypeChange', 'resetTypeBtn'],
     data () {
         return {
+            store,
+            archetypeSelected: '',
+             
 
+        }
+    },
+    methods:{
+        filterArchetype(){
+            this.$emit('onArchetypeChange') 
+        },
+        resetType(){
+            this.$emit('resetTypeBtn') 
         }
     }
 }
